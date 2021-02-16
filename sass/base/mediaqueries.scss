@@ -1,0 +1,32 @@
+@media screen and (max-width: 600px){
+    #produit_page{
+        flex-direction: column;
+
+        #produit_photo{
+            height: 100px;
+            width: 50%;
+        }
+    }
+}
+
+@media screen and (max-width: 780px){
+    body{
+        margin: 0px 0px;
+    }
+
+    fieldset{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: center;
+        width: 90vw;
+    
+        input{
+            width: 100%;
+        }
+    
+        textarea{
+            width: 100%;
+        }
+    }
+}

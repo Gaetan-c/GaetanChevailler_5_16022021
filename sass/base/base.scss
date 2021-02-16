@@ -1,0 +1,28 @@
+$purple: #8b17b7;
+$bglogo: #f3e9f1;
+
+a{
+    text-decoration: none;
+    color: #000;
+    font-size: 1em;
+}
+
+*{
+    font-family:'Sriracha';
+}
+
+body{
+    margin: 0px 80px;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+section{
+    display: flex;
+    flex-flow: row wrap;
+    text-align: center;
+}
+
+li{
+    list-style-type: none;
+}

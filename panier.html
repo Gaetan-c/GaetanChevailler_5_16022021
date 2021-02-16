@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link type="text/css" rel="stylesheet" href="./sass/style.css">
+        <script src="https://kit.fontawesome.com/8e5ac735b3.js" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Sriracha&display=swap" rel="stylesheet">
+        <link rel="shortcut icon" href="#">
+        
+        <title>Votre panier - Orinoco</title>
+        
+    </head>
+
+    <body id="panier_page">
+
+        <header class="header">
+            <a href="index.html"><img src="./JWDP5/images/Orinoco.png"></a>
+
+            <nav>
+                <a href="index.html">ACCUEIL</a>
+                <a href="panier.html">PANIER</a>
+            </nav>
+        </header>
+            <h1 id="cart_title">Votre panier</h1>
+            
+            <section id="cart_Article">
+                <img id="produit_photo" src=${produits.image}>
+                <h1>${produits.name}</h1>
+                <p id="produit_prix">${produits.price} + €</p>
+                    <div id="cart_chevrons">
+                    <button><i class="fas fa-chevron-up"></i></button>
+                    <p id="cart_numberOfArticle">${numberOfArticle}</p>
+                    <button><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                <button id="cart_remove"><span class="fas fa-trash"></span></button>
+            </section>
+
+            <h2>Total:<span id="totalPrice">${totalprice}</span></h2>
+
+                <form id="form">
+                    <fieldset>
+                        <legend>Renseignements pour l'expédition</legend>
+                        <label for="name">Nom :</label>
+                        <input id="name" type="text" required aria-required="true">
+                        <label for="nb">Numéro :</label>
+                        <input id="nb" type="number" required aria-required="true">
+                        <label for="adresse" type="text">Libelé de la voie :</label>
+                        <input id="adresse" type="text" required aria-required="true">
+                        <label for="complément">Renseignements complémentaires :</label>
+                        <textarea id="complément" type="texte" rows="2" cols="20"></textarea>
+                        <button type="submit">Envoyer</button>
+                    </fieldset>
+                </form>
+        <footer>
+
+        </footer>
+        <script type="text/javascript" src="index.js"></script>
+    </body>
+</html>

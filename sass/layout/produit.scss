@@ -1,0 +1,27 @@
+#produit_page{
+
+    #produit_photo{
+        width: auto;
+        height: 400px;
+        overflow: hidden;
+        flex-basis: 50%;
+    }
+
+    #produit_texte{
+        flex-basis: 45%;
+        justify-content: space-around;
+    }
+
+    h1, h2, p{
+        flex-basis: 100%;
+    }
+
+    button{
+        flex-basis: 50%;
+        background-color: $purple;
+        color: #fff;
+        border-radius: 50px;
+        height: 50px;
+        font-size: 1.1em;
+    }
+}

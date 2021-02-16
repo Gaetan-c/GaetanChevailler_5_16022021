@@ -1,0 +1,21 @@
+.header{
+    display: flex;
+    flex-basis: 100%;
+    font-size: 1.2em;
+    height: 80px;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 5px double $purple;
+    background-color: $bglogo;
+    padding-top: 10px;
+    margin-bottom: 25px;
+
+    img{
+        height: 80px;
+        width: auto;
+    }
+
+    nav a{
+        padding: 15px;
+    }
+}
