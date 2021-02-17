@@ -11,8 +11,7 @@ if(localStorage != null){
     localStorage.cartProducts = []
 }
 
-const indexTeddyBear = document.getElementById('index_oursEnPeluche')
-
+// fonction AJAX appel des produits
 
 let getProducts = function(){
     return new Promise(function(resolve){
@@ -30,6 +29,11 @@ let getProducts = function(){
     })
 }
 
+// préparation pour la page d'accueil
+
+const indexTeddyBear = document.getElementById('index_oursEnPeluche')
+
+// appel des produits et mise en page
 async function getIndex(){
     if(indexTeddyBear != null){
         const products = await getProducts()
@@ -66,21 +70,28 @@ async function getIndex(){
 
 getIndex()
 
+// fonction pour la page Produit.html
+// mise en page et création de l'URL
+
 async function pageProduct(){
-    let urlProduct = location.search.toString()
-    const theProduct = await getProducts()
-
-    document.getElementById("produit_photo").setAttribute('src', theProduct.imageUrl)
-    document.getElementById("produit_nom").innerHTML = theProduct.name
-    document.getElementById("produit_description").innerHTML = theProduct.description
-    document.getElementById("produit_prix").innerHTML = parseInt(theProduct.price / 100).toFixed(2) + ' €'
-
-    theProduct.colors.forEach(function(product){
-        let optionColor = document.createElement("option")
-        getElementById("color").appendChild(optionColor).innerHTML = product
-})
+    if(document.getElementById("produit_photo") != null){
+        let urlProduct = location.search.toString()
+        const theProduct = await getProducts()
+    
+        document.getElementById("produit_photo").setAttribute('src', theProduct.imageUrl)
+        document.getElementById("produit_nom").innerHTML = theProduct.name
+        document.getElementById("produit_description").innerHTML = theProduct.description
+        document.getElementById("produit_prix").innerHTML = parseInt(theProduct.price / 100).toFixed(2) + ' €'
+    
+        // pour l'ajout des options de couleur
+        theProduct.colors.forEach(function(product){
+            let optionColor = document.createElement("option")
+            getElementById("color").appendChild(optionColor).innerHTML = product
+        })  
+    }
 }
 
+// appel de la page produit au clic des <li>
 createdLi = document.getElementsByClassName("createdLi")
 createdLi = addEventListener('click', pageProduct())
 
