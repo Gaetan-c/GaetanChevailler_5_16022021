@@ -1,10 +1,18 @@
 @media screen and (max-width: 600px){
     #produit_page{
         flex-direction: column;
+        align-items: center;
 
         #produit_photo{
-            height: 100px;
-            width: 50%;
+            height: auto;
+            width: 95%;
+        }
+
+        #messageAddToCart{
+            font-size: 1.5em;
+            margin: 0px;
+            width: 320px;
+            display: none;
         }
     }
 }

@@ -1,27 +1,27 @@
 #produit_page{
+    justify-content: space-between;
 
     #produit_photo{
         width: auto;
-        height: 400px;
+        height: 75%;
         overflow: hidden;
         flex-basis: 50%;
+        margin: 3% 0;
     }
 
     #produit_texte{
         flex-basis: 45%;
-        justify-content: space-around;
+        justify-content: space-evenly;        
     }
 
     h1, h2, p{
         flex-basis: 100%;
     }
 
-    button{
-        flex-basis: 50%;
-        background-color: $purple;
-        color: #fff;
-        border-radius: 50px;
-        height: 50px;
-        font-size: 1.1em;
+    #messageAddToCart{
+        font-size: 1.5em;
+        color: green;
+        width: 100px;
+        display: none;
     }
 }

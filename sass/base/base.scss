@@ -13,16 +13,32 @@ a{
 
 body{
     margin: 0px 80px;
-    display: flex;
     flex-flow: row wrap;
+}
+
+#produit_page, #index{
+    display: flex;
 }
 
 section{
     display: flex;
-    flex-flow: row wrap;
     text-align: center;
+}
+
+#section_oursEnPeluche, #produit_texte{
+    flex-flow: row wrap;
 }
 
 li{
     list-style-type: none;
+}
+
+.bouton_valide{
+    flex-basis: 50%;
+    background-color: $purple;
+    color: $bglogo;
+    border-radius: 50px;
+    height: 50px;
+    font-size: 1.1em;
+    justify-self: center;
 }

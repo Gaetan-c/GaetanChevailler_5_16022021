@@ -24,36 +24,30 @@
                 <a href="panier.html">PANIER</a>
             </nav>
         </header>
-            <h1 id="cart_title">Votre panier</h1>
+            <h1 id="cart_title">Votre panier<span id="estVide"> est vide ! <a href="index.html">Adopter un ourson =)</a></span></h1>
             
-            <section id="cart_Article">
-                <img id="produit_photo" src=${produits.image}>
-                <h1>${produits.name}</h1>
-                <p id="produit_prix">${produits.price} + €</p>
-                    <div id="cart_chevrons">
-                    <button><i class="fas fa-chevron-up"></i></button>
-                    <p id="cart_numberOfArticle">${numberOfArticle}</p>
-                    <button><i class="fas fa-chevron-down"></i></button>
-                    </div>
-                <button id="cart_remove"><span class="fas fa-trash"></span></button>
-            </section>
+            <main id="mainCart">
 
-            <h2>Total:<span id="totalPrice">${totalprice}</span></h2>
+            </main>
 
-                <form id="form">
-                    <fieldset>
-                        <legend>Renseignements pour l'expédition</legend>
-                        <label for="name">Nom :</label>
-                        <input id="name" type="text" required aria-required="true">
-                        <label for="nb">Numéro :</label>
-                        <input id="nb" type="number" required aria-required="true">
-                        <label for="adresse" type="text">Libelé de la voie :</label>
-                        <input id="adresse" type="text" required aria-required="true">
-                        <label for="complément">Renseignements complémentaires :</label>
-                        <textarea id="complément" type="texte" rows="2" cols="20"></textarea>
-                        <button type="submit">Envoyer</button>
-                    </fieldset>
-                </form>
+            <h2 id="finalPrice">Total : <span id="totalPrice">0 €</span></h2>
+            
+            <form id="form" action="" method="POST">
+                <fieldset>
+                    <legend>Renseignements pour l'expédition</legend>
+                    <label for="name">Nom :</label>
+                    <input id="name" type="text" required aria-required="true">
+                    <label for="nb">Numéro :</label>
+                    <input id="nb" type="number" required aria-required="true">
+                    <label for="adresse">Libelé de la voie :</label>
+                    <input id="adresse" type="text" required aria-required="true">
+                    <label for="email">Email :</label>
+                    <input id="email" type="email" required aria-required="true">
+                    <label for="complément">Renseignements complémentaires :</label>
+                    <textarea id="complément" type="texte" rows="2" cols="20"></textarea>
+                    <button class="bouton_valide" type="submit">Acheter</button>
+                </fieldset>
+            </form>
         <footer>
 
         </footer>

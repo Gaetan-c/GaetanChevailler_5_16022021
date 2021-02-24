@@ -10,40 +10,58 @@ a {
 
 body {
   margin: 0px 80px;
-  display: flex;
   flex-flow: row wrap;
+}
+
+#produit_page, #index {
+  display: flex;
 }
 
 section {
   display: flex;
-  flex-flow: row wrap;
   text-align: center;
+}
+
+#section_oursEnPeluche, #produit_texte {
+  flex-flow: row wrap;
 }
 
 li {
   list-style-type: none;
 }
 
+.bouton_valide {
+  flex-basis: 50%;
+  background-color: #8b17b7;
+  color: #f3e9f1;
+  border-radius: 50px;
+  height: 50px;
+  font-size: 1.1em;
+  justify-self: center;
+}
+
+#produit_page {
+  justify-content: space-between;
+}
 #produit_page #produit_photo {
   width: auto;
-  height: 400px;
+  height: 75%;
   overflow: hidden;
   flex-basis: 50%;
+  margin: 3% 0;
 }
 #produit_page #produit_texte {
   flex-basis: 45%;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 #produit_page h1, #produit_page h2, #produit_page p {
   flex-basis: 100%;
 }
-#produit_page button {
-  flex-basis: 50%;
-  background-color: #8b17b7;
-  color: #fff;
-  border-radius: 50px;
-  height: 50px;
-  font-size: 1.1em;
+#produit_page #messageAddToCart {
+  font-size: 1.5em;
+  color: green;
+  width: 100px;
+  display: none;
 }
 
 body h1 {
@@ -104,48 +122,77 @@ footer {
   margin-top: 25px;
 }
 
-#cart_Article {
-  width: 100%;
-  justify-content: space-around;
-  align-items: center;
+#finalPrice {
+  display: none;
 }
-#cart_Article img {
+
+#cart_title a {
+  text-decoration: underline;
+}
+#cart_title a:hover {
+  color: purple;
+}
+
+#mainCart {
+  margin: 10px;
+}
+#mainCart .cart_Article {
+  align-items: center;
+  margin: 20px;
+}
+#mainCart .cart_Article img {
   flex-basis: 25%;
   max-width: 150px;
 }
-#cart_Article button {
+#mainCart .cart_Article #cart_prix {
+  margin-right: 10%;
+}
+#mainCart .cart_Article div {
+  margin: 5%;
+}
+#mainCart .cart_Article button {
   border: none;
   background-color: #fff;
   color: #8b17b7;
   font-size: 1.5em;
 }
 
-body #totalPrice {
-  justify-content: flex-end;
+#form {
+  display: none;
+  flex-flow: row wrap;
+  justify-content: center;
   flex-basis: 100%;
 }
 
 fieldset {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
-  width: 50vw;
+  width: 65vw;
 }
 fieldset input {
-  width: 50%;
+  width: 100%;
 }
 fieldset textarea {
   width: 100%;
+}
+fieldset .bouton_valide {
+  width: 220px;
+  margin-left: 37%;
+  margin-top: 5px;
 }
 
 @media screen and (max-width: 600px) {
   #produit_page {
     flex-direction: column;
+    align-items: center;
   }
   #produit_page #produit_photo {
-    height: 100px;
-    width: 50%;
+    height: auto;
+    width: 95%;
+  }
+  #produit_page #messageAddToCart {
+    font-size: 1.5em;
+    margin: 0px;
+    width: 320px;
+    display: none;
   }
 }
 @media screen and (max-width: 780px) {
