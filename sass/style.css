@@ -119,7 +119,29 @@ footer {
   background-color: #f3e9f1;
   height: 40px;
   border-top: 5px double #8b17b7;
-  margin-top: 25px;
+  margin-top: 50px;
+}
+
+#confirmation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#confirmation h1 {
+  padding-left: 5%;
+}
+#confirmation main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: double 5px #8b17b7;
+  padding: 10px 20px;
+  flex-basis: 100%;
+  margin: 15px;
+}
+#confirmation main div {
+  border: solid 3px #f3e9f1;
+  padding: 5px 10px;
 }
 
 #finalPrice {

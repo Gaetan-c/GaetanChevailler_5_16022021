@@ -1,0 +1,24 @@
+#confirmation{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h1{
+      padding-left: 5%;  
+    }
+
+    main{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: double 5px $purple;
+      padding: 10px 20px;
+      flex-basis: 100%;
+      margin: 15px;
+
+      div{
+        border: solid 3px $bglogo;
+        padding: 5px 10px;
+      }
+    }
+}

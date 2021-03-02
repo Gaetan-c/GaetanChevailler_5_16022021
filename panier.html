@@ -24,30 +24,32 @@
                 <a href="panier.html">PANIER</a>
             </nav>
         </header>
-            <h1 id="cart_title">Votre panier<span id="estVide"> est vide ! <a href="index.html">Adopter un ourson =)</a></span></h1>
-            
-            <main id="mainCart">
 
-            </main>
-
-            <h2 id="finalPrice">Total : <span id="totalPrice">0 €</span></h2>
+        <h1 id="cart_title">Votre panier<span id="estVide"> est vide, <a href="index.html">adopter un ourson !</a></span></h1>
             
-            <form id="form" action="" method="POST">
-                <fieldset>
-                    <legend>Renseignements pour l'expédition</legend>
-                    <label for="name">Nom :</label>
-                    <input id="name" type="text" required aria-required="true">
-                    <label for="nb">Numéro :</label>
-                    <input id="nb" type="number" required aria-required="true">
-                    <label for="adresse">Libelé de la voie :</label>
-                    <input id="adresse" type="text" required aria-required="true">
-                    <label for="email">Email :</label>
-                    <input id="email" type="email" required aria-required="true">
-                    <label for="complément">Renseignements complémentaires :</label>
-                    <textarea id="complément" type="texte" rows="2" cols="20"></textarea>
-                    <button class="bouton_valide" type="submit">Acheter</button>
-                </fieldset>
-            </form>
+        <main id="mainCart">
+
+        </main>
+
+        <h2 id="finalPrice">Total : <span id="totalPrice">0 €</span></h2>
+            
+        <form id="form" action="confirmation.html" method="POST">
+            <fieldset>
+                <legend>Renseignements pour l'expédition</legend>
+                <label for="firstName">Prénom :</label>
+                <input id="firstName" type="text" required aria-required="true">
+                <label for="lastName">Nom :</label>
+                <input id="lastName" type="text" required aria-required="true">
+                <label for="adress">Libelé de la voie :</label>
+                <input id="adress" type="text" required aria-required="true">
+                <label for="city">Ville :</label>
+                <input id="city" type="text" required aria-required="true">
+                <label for="email">Email :</label>
+                <input id="email" type="email" required aria-required="true">
+                <button id="validationButton" class="bouton_valide" type="submit">Acheter</button>
+            </fieldset>
+        </form>
+
         <footer>
 
         </footer>
