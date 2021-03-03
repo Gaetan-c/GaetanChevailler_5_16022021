@@ -174,9 +174,12 @@ if(cartProducts.length > 0 && mainCart != null){
         })
     }
 }
+
+// finalisation : page de confirmation et requête POST
  // créations éléments de réponse de l'API
  let contact = {}
  let products = []
+ console.log(contact, products)
 
  // vérifier les indications du formulaire
  formChecker = () =>{
@@ -190,7 +193,7 @@ if(cartProducts.length > 0 && mainCart != null){
     // récupération des valeurs inscrites
     let firstNameValue = document.getElementById('firstName').value
     let lastNameValue = document.getElementById('lastName').value
-    let adressValue = document.getElementById('adress').value
+    let addressValue = document.getElementById('address').value
     let cityValue = document.getElementById('city').value
     let emailValue = document.getElementById('email').value
 
@@ -218,8 +221,8 @@ if(cartProducts.length > 0 && mainCart != null){
         alert(messageAlert)
     }
 
-    if(lettersChecker.test(adressValue) == true && symbolsChecker.test(adressValue) == false && adressValue != ""){
-        console.log('adresseValue est OK')
+    if(lettersChecker.test(addressValue) == true && symbolsChecker.test(addressValue) == false && addressValue != ""){
+        console.log('addresseValue est OK')
     }else{
         messageAlert = "l'adresse renseignée est invalide : les caractères spéciaux ne sont pas acceptés"
         alert(messageAlert)
@@ -235,11 +238,11 @@ if(cartProducts.length > 0 && mainCart != null){
         alert("le formulaire n'est pas conforme : veuillez resaisir les informations demandées.")
     }else{
         contact = {
-            firstName : firstNameValue,
+            firstName: firstNameValue,
             lastName: lastNameValue,
-            address: adressValue,
+            address: addressValue,
             city: cityValue,
-            email : emailValue,
+            email: emailValue,
         }
         return contact
     }
@@ -269,13 +272,15 @@ let sendForm = function(sendValues){
             if(request.readyState === XMLHttpRequest.DONE && request.status == 201){
                 sessionStorage.setItem('confirmation', request.responseText)
 
+                document.forms["form"].action = 'confirmation.html'
+                document.forms["form"].submit()
+
                 resolve(JSON.parse(request.responseText))
-                window.location.href = 'confirmation.html'
             }
         }
-        request.open("POST", "http://localhost:3000/api/teddies" + "/order")
+        request.open("POST", "http://localhost:3000/api/teddies/order")
         request.setRequestHeader("Content-Type", "application/json")
-        request.send(JSON.parse(sendValues))
+        request.send(sendValues)
     })
 }
 
@@ -287,6 +292,7 @@ let formValider = () =>{
         if(formChecker() != null && noEmptyCart() == true){
             // si envoi possible : ces données sont envoyées stringifiées
             let values = {contact, products}
+            console.log(values)
 
             let sendValues = JSON.stringify(values)
             sendForm(sendValues)
@@ -310,9 +316,9 @@ let showConfirmation = () =>{
 
         // afficher les informations nécessaires
         mainConfirm.innerHTML = `<h2>Informations sur la commande</h2>
-        <p>Nom et prénom : ${confirm.contact.firstNameValue} ${confirm.contact.lastNameValue}</p>
-        <p>Adresse : ${confirm.contact.adressValue} ${confirm.contact.city}</p>
-        <p>Email : ${confirm.contact.emailValue}</p>
+        <p>Nom et prénom : ${confirm.contact.firstName} ${confirm.contact.lastName}</p>
+        <p>Adresse : ${confirm.contact.address} ${confirm.contact.city}</p>
+        <p>Email : ${confirm.contact.email}</p>
         <p>Numéro de commande : ${confirm.orderId}</p>`
     } else {
         alert("Wrong way, we're sorry !")
