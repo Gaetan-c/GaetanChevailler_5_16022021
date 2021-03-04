@@ -177,35 +177,29 @@ if(cartProducts.length > 0 && mainCart != null){
 
 // finalisation : page de confirmation et requête POST
  // créations éléments de réponse de l'API
-     // récupération des valeurs inscrites
-let firstNameValue = document.getElementById('firstName').value
-let lastNameValue = document.getElementById('lastName').value
-let addressValue = document.getElementById('address').value
-let cityValue = document.getElementById('city').value
-let emailValue = document.getElementById('email').value
 
- let contact = {
-    firstName: firstNameValue,
-    lastName: lastNameValue,
-    address: addressValue,
-    city: cityValue,
-    email: emailValue,
- }
- let products = []
+let contact = {}
+let products = []
  
- let getProductsId = () =>{
+let getProductsId = () =>{
     cartProducts.forEach(function(product){
         products.push(product._id)
         console.log(products)
     })
- }
+}
 
  // vérifier les indications du formulaire
- let formChecker = () =>{
+let formChecker = () =>{
     // regex
     const emailChecker = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
 
     let messageAlert = ""
+     // récupération des valeurs inscrites
+    let firstNameValue = document.getElementById('firstName').value
+    let lastNameValue = document.getElementById('lastName').value
+    let addressValue = document.getElementById('address').value
+    let cityValue = document.getElementById('city').value
+    let emailValue = document.getElementById('email').value
 
     // vérifications de la valeur de l'email (les autres sont vérifiées par le HTML5)
     if(emailChecker.test(emailValue) == true && emailValue != null){
@@ -219,7 +213,14 @@ let emailValue = document.getElementById('email').value
     if(messageAlert != ""){
         return false
     }else{
-        return true
+        contact ={
+        firstName: firstNameValue,
+        lastName: lastNameValue,
+        address: addressValue,
+        city: cityValue,
+        email: emailValue,
+    }
+    return contact
     }
 }
 
