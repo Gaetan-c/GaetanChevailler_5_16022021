@@ -55,6 +55,10 @@ fieldset{
 
     input{
         width: 100%;
+
+        &:valid {
+            box-shadow: 0 0 2px 1px darkgreen;
+        }
     }
 
     textarea{

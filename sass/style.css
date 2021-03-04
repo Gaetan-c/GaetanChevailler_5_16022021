@@ -192,6 +192,9 @@ fieldset {
 fieldset input {
   width: 100%;
 }
+fieldset input:valid {
+  box-shadow: 0 0 2px 1px darkgreen;
+}
 fieldset textarea {
   width: 100%;
 }

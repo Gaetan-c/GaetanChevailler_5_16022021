@@ -177,92 +177,62 @@ if(cartProducts.length > 0 && mainCart != null){
 
 // finalisation : page de confirmation et requête POST
  // créations éléments de réponse de l'API
- let contact = {}
+     // récupération des valeurs inscrites
+let firstNameValue = document.getElementById('firstName').value
+let lastNameValue = document.getElementById('lastName').value
+let addressValue = document.getElementById('address').value
+let cityValue = document.getElementById('city').value
+let emailValue = document.getElementById('email').value
+
+ let contact = {
+    firstName: firstNameValue,
+    lastName: lastNameValue,
+    address: addressValue,
+    city: cityValue,
+    email: emailValue,
+ }
  let products = []
- console.log(contact, products)
+ 
+ let getProductsId = () =>{
+    cartProducts.forEach(function(product){
+        products.push(product._id)
+        console.log(products)
+    })
+ }
 
  // vérifier les indications du formulaire
- formChecker = () =>{
-
+ let formChecker = () =>{
     // regex
-    const lettersChecker = /[a-zA-Z]/
-    const symbolsChecker = /[§!@#$%^&*(),.?":{}|<>]/
-    const numbersChecker = /[1-9]/
     const emailChecker = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
-
-    // récupération des valeurs inscrites
-    let firstNameValue = document.getElementById('firstName').value
-    let lastNameValue = document.getElementById('lastName').value
-    let addressValue = document.getElementById('address').value
-    let cityValue = document.getElementById('city').value
-    let emailValue = document.getElementById('email').value
 
     let messageAlert = ""
 
-    // vérifications des valeurs nécessaires: nom et adresse, et numéro supérieur à 0 (les autres sont vérifiées par le HTML5)
-    if(lettersChecker.test(firstNameValue) == true && symbolsChecker.test(firstNameValue) == false && numbersChecker.test(firstNameValue) == false && firstNameValue != ""){
-        console.log('firstNameValue est OK')
-    }else{
-        messageAlert = 'Le prénom renseigné est invalide : seules les lettres sont acceptées.'
-        alert(messageAlert)
-    }
-
-    if(lettersChecker.test(lastNameValue) == true && symbolsChecker.test(lastNameValue) == false && numbersChecker.test(lastNameValue) == false && lastNameValue != ""){
-        console.log('lastNameValue est OK')
-    }else{
-        messageAlert = 'Le nom renseigné est invalide : seules les lettres sont acceptées.'
-        alert(messageAlert)
-    }
-
-    if(lettersChecker.test(cityValue) == true && symbolsChecker.test(cityValue) == false && numbersChecker.test(cityValue) == false && cityValue != ""){
-        console.log('cityValue est OK')
-    }else{
-        messageAlert = 'La ville renseignée est invalide : seules les lettres sont acceptées.'
-        alert(messageAlert)
-    }
-
-    if(lettersChecker.test(addressValue) == true && symbolsChecker.test(addressValue) == false && addressValue != ""){
-        console.log('addresseValue est OK')
-    }else{
-        messageAlert = "l'adresse renseignée est invalide : les caractères spéciaux ne sont pas acceptés"
-        alert(messageAlert)
-    }
+    // vérifications de la valeur de l'email (les autres sont vérifiées par le HTML5)
     if(emailChecker.test(emailValue) == true && emailValue != null){
         console.log('email est OK')
+        return true
     }else{
         messageAlert = "l'adresse mail renseignée est invalide"
-        alert(messageAlert)
     }
 
+    // si le message est vide alors le formulaire est conforme
     if(messageAlert != ""){
-        alert("le formulaire n'est pas conforme : veuillez resaisir les informations demandées.")
+        return false
     }else{
-        contact = {
-            firstName: firstNameValue,
-            lastName: lastNameValue,
-            address: addressValue,
-            city: cityValue,
-            email: emailValue,
-        }
-        return contact
+        return true
     }
 }
 
 // vérification du panier : est-il vide ?
-let emptyCartChecker = JSON.parse(localStorage.getItem("LSCartProducts"))
-
 let noEmptyCart = () =>{
-    if(emptyCartChecker == null){
+    if(cartProducts == null){
         alert("Erreur : votre panier est vide")
         return false
     }else{
-        cartProducts.forEach(function(product){
-            products.push(product._id)
-            console.log(product._id)
-        })
     return true
     }
 } 
+console.log(contact, products)
 
 // envoi de la requête POST
 let sendForm = function(sendValues){
@@ -270,12 +240,13 @@ let sendForm = function(sendValues){
         let request = new XMLHttpRequest()
         request.onreadystatechange = function(){
             if(request.readyState === XMLHttpRequest.DONE && request.status == 201){
+
+                resolve(JSON.parse(request.responseText))
+
                 sessionStorage.setItem('confirmation', request.responseText)
 
                 document.forms["form"].action = 'confirmation.html'
                 document.forms["form"].submit()
-
-                resolve(JSON.parse(request.responseText))
             }
         }
         request.open("POST", "http://localhost:3000/api/teddies/order")
@@ -286,21 +257,15 @@ let sendForm = function(sendValues){
 
 // vérifier la validité du formulaire
 let formValider = () =>{
-
     let validationButton = document.getElementById('validationButton')
-    validationButton.addEventListener('click', () =>{
-        if(formChecker() != null && noEmptyCart() == true){
+    validationButton.addEventListener('click', function(){
+        if(formChecker() == true && noEmptyCart() == true){
             // si envoi possible : ces données sont envoyées stringifiées
+            getProductsId()
             let values = {contact, products}
             console.log(values)
-
             let sendValues = JSON.stringify(values)
             sendForm(sendValues)
-
-            // réinitialisation des éléments après envoi du formulaire
-            contact = {}
-            products = []
-            localStorage.clear()
         }else{
             alert('Erreur : try again !')
             console.log('GAME OVER')
@@ -320,6 +285,12 @@ let showConfirmation = () =>{
         <p>Adresse : ${confirm.contact.address} ${confirm.contact.city}</p>
         <p>Email : ${confirm.contact.email}</p>
         <p>Numéro de commande : ${confirm.orderId}</p>`
+
+        if(mainConfirm != null){ // réinitialisation des éléments après envoi du formulaire
+            contact = {}
+            products = []
+            localStorage.clear()
+        }
     } else {
         alert("Wrong way, we're sorry !")
         window.open('index.html')
