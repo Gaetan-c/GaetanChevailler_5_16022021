@@ -28,7 +28,6 @@ let getProducts = function(){
                 console.log("request says error")
             }
         }
-
         request.open("GET", "http://localhost:3000/api/teddies" + '/' + urlProduct)
         request.send()
     })
@@ -180,74 +179,76 @@ if(cartProducts.length > 0 && mainCart != null){
 
 let contact = {}
 let products = []
- 
-let getProductsId = () =>{
-    cartProducts.forEach(function(product){
-        products.push(product._id)
-        console.log(products)
-    })
-}
+let sendValues
+const emailChecker = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+let formValidation = document.getElementById('validationButton')
 
- // vérifier les indications du formulaire
-let formChecker = () =>{
-    // regex
-    const emailChecker = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
-
-    let messageAlert = ""
-     // récupération des valeurs inscrites
-    let firstNameValue = document.getElementById('firstName').value
-    let lastNameValue = document.getElementById('lastName').value
-    let addressValue = document.getElementById('address').value
-    let cityValue = document.getElementById('city').value
-    let emailValue = document.getElementById('email').value
-
-    // vérifications de la valeur de l'email (les autres sont vérifiées par le HTML5)
-    if(emailChecker.test(emailValue) == true && emailValue != null){
-        console.log('email est OK')
+let checkCart = () =>{
+    if(cartProducts != null){
         return true
     }else{
-        messageAlert = "l'adresse mail renseignée est invalide"
-    }
-
-    // si le message est vide alors le formulaire est conforme
-    if(messageAlert != ""){
         return false
-    }else{
-        contact ={
-        firstName: firstNameValue,
-        lastName: lastNameValue,
-        address: addressValue,
-        city: cityValue,
-        email: emailValue,
-    }
-    return contact
     }
 }
 
-// vérification du panier : est-il vide ?
-let noEmptyCart = () =>{
-    if(cartProducts == null){
-        alert("Erreur : votre panier est vide")
-        return false
-    }else{
-    return true
-    }
-} 
-console.log(contact, products)
+let form = document.getElementById('form')
 
-// envoi de la requête POST
-let sendForm = function(sendValues){
+// vérifier les indications du formulaire et des valeurs demandées
+  // récupération des valeurs inscrites
+let checkForm = () =>{
+    // vérifications de la valeur de l'email (les autres sont vérifiées par le HTML5)
+    if(cartProducts != null){
+        console.log("EmailChecker == true")
+        let firstNameValue = document.getElementById('firstName').value
+        let lastNameValue = document.getElementById('lastName').value
+        let addressValue = document.getElementById('address').value
+        let cityValue = document.getElementById('city').value
+        let emailValue = document.getElementById('email').value
+
+        if(emailChecker.test(emailValue) == true){
+
+            contact = {
+                "firstName": firstNameValue,
+                "lastName": lastNameValue,
+                "address": addressValue,
+                "city": cityValue,
+                "email": emailValue
+            }
+        }    
+        return contact
+    }
+}
+
+let sendForm = () =>{
+
+    if(checkCart() != false && checkForm() != false){
+        cartProducts.forEach(function(product){
+            products.push(product._id)
+        })
+
+        let values = {
+            contact,
+            products
+        }
+
+        sendValues = JSON.stringify(values)
+        console.log(sendValues)
+        sessionStorage.setItem('order', sendValues)
+    }else{
+        console.log("erreur au sendForm")
+    }
+}
+
+// requête POST
+let sendPost = function(sendValues){
     return new Promise(function(resolve){
         let request = new XMLHttpRequest()
         request.onreadystatechange = function(){
             if(request.readyState === XMLHttpRequest.DONE && request.status == 201){
-
-                resolve(JSON.parse(request.responseText))
-
-                sessionStorage.setItem('confirmation', request.responseText)
-
-                document.forms["form"].action = 'confirmation.html'
-                document.forms["form"].submit()
+                let réponse = localStorage.setItem('réponse', this.responseText)
+                resolve(this.responseText)
+                console.log(réponse)
+                window.location.href = 'confirmation.html'
             }
         }
         request.open("POST", "http://localhost:3000/api/teddies/order")
@@ -256,45 +257,35 @@ let sendForm = function(sendValues){
     })
 }
 
-// vérifier la validité du formulaire
-let formValider = () =>{
-    let validationButton = document.getElementById('validationButton')
-    validationButton.addEventListener('click', function(){
-        if(formChecker() == true && noEmptyCart() == true){
-            // si envoi possible : ces données sont envoyées stringifiées
-            getProductsId()
-            let values = {contact, products}
-            console.log(values)
-            let sendValues = JSON.stringify(values)
-            sendForm(sendValues)
-        }else{
-            alert('Erreur : try again !')
-            console.log('GAME OVER')
-        }
-    })
-}
+if(formValidation != null)
+formValidation.addEventListener('click', (e, sendValues)=>{
+    e.preventDefault()
+
+    sendForm()
+    sendPost(sendValues)
+    
+    contact = {}
+    products =[]
+    localStorage.clear()
+})
 
 // ouvrir la page de confirmation (nouvel onglet ou non)
-let showConfirmation = () =>{
-    if(sessionStorage.getItem('confirmation') != null){
-        let confirm = JSON.parse(sessionStorage.getItem('confirmation'))
-        let mainConfirm = document.getElementById('mainConfirm')
+const mainConfirm = document.getElementById("mainConfirm")
 
-        // afficher les informations nécessaires
+let getOrder = () =>{
+    if(sessionStorage.getItem("order") != null){
+        let order = JSON.parse(sessionStorage.getItem('order'))
         mainConfirm.innerHTML = `<h2>Informations sur la commande</h2>
-        <p>Nom et prénom : ${confirm.contact.firstName} ${confirm.contact.lastName}</p>
-        <p>Adresse : ${confirm.contact.address} ${confirm.contact.city}</p>
-        <p>Email : ${confirm.contact.email}</p>
-        <p>Numéro de commande : ${confirm.orderId}</p>`
+        <p>Nom et prénom : ${order.contact.firstName} ${order.contact.lastName}</p>
+        <p>Adresse : ${order.contact.address} ${order.contact.city}</p>
+        <p>Email : ${order.contact.email}</p>
+        <p>Total de la commande: ${totalPrice}</p>
+        <p>Numéro de commande : ${order.orderId}</p>`
+        console.log(order + " pas d'erreur au getOrder")
 
-        if(mainConfirm != null){ // réinitialisation des éléments après envoi du formulaire
-            contact = {}
-            products = []
-            localStorage.clear()
-        }
-    } else {
-        alert("Wrong way, we're sorry !")
-        window.open('index.html')
+        sessionStorage.removeItem('order')
+    }else{
+        alert("Merci de votre commande !")
+        window.location.href = "index.html"
     }
 }
-
