@@ -182,110 +182,107 @@ let products = []
 let sendValues
 const emailChecker = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
 let formValidation = document.getElementById('validationButton')
-
-let checkCart = () =>{
-    if(cartProducts != null){
-        return true
-    }else{
-        return false
-    }
-}
-
 let form = document.getElementById('form')
-
-// vérifier les indications du formulaire et des valeurs demandées
-  // récupération des valeurs inscrites
-let checkForm = () =>{
-    // vérifications de la valeur de l'email (les autres sont vérifiées par le HTML5)
-    if(cartProducts != null){
-        console.log("EmailChecker == true")
-        let firstNameValue = document.getElementById('firstName').value
-        let lastNameValue = document.getElementById('lastName').value
-        let addressValue = document.getElementById('address').value
-        let cityValue = document.getElementById('city').value
-        let emailValue = document.getElementById('email').value
-
-        if(emailChecker.test(emailValue) == true){
-
-            contact = {
-                "firstName": firstNameValue,
-                "lastName": lastNameValue,
-                "address": addressValue,
-                "city": cityValue,
-                "email": emailValue
-            }
-        }    
-        return contact
-    }
-}
-
-let sendForm = () =>{
-
-    if(checkCart() != false && checkForm() != false){
-        cartProducts.forEach(function(product){
-            products.push(product._id)
-        })
-
-        let values = {
-            contact,
-            products
-        }
-
-        sendValues = JSON.stringify(values)
-        console.log(sendValues)
-        sessionStorage.setItem('order', sendValues)
-    }else{
-        console.log("erreur au sendForm")
-    }
-}
-
-// requête POST
-let sendPost = function(sendValues){
-    return new Promise(function(resolve){
-        let request = new XMLHttpRequest()
-        request.onreadystatechange = function(){
-            if(request.readyState === XMLHttpRequest.DONE && request.status == 201){
-                let réponse = localStorage.setItem('réponse', this.responseText)
-                resolve(this.responseText)
-                console.log(réponse)
-                window.location.href = 'confirmation.html'
-            }
-        }
-        request.open("POST", "http://localhost:3000/api/teddies/order")
-        request.setRequestHeader("Content-Type", "application/json")
-        request.send(sendValues)
-    })
-}
+const mainConfirm = document.getElementById("mainConfirm")
 
 if(formValidation != null)
-formValidation.addEventListener('click', (e, sendValues)=>{
+formValidation.addEventListener('click', (e)=>{
     e.preventDefault()
 
-    sendForm()
-    sendPost(sendValues)
+    let checkCart = () =>{
+        if(cartProducts != null){
+            return true
+        }else{
+            return false
+        }
+    }
     
-    contact = {}
-    products =[]
+    // vérifier les indications du formulaire et des valeurs demandées
+      // récupération des valeurs inscrites
+    let checkForm = () =>{
+        // vérifications de la valeur de l'email (les autres sont vérifiées par le HTML5)
+        if(cartProducts != null){
+            console.log("EmailChecker == true")
+            let firstNameValue = document.getElementById('firstName').value
+            let lastNameValue = document.getElementById('lastName').value
+            let addressValue = document.getElementById('address').value
+            let cityValue = document.getElementById('city').value
+            let emailValue = document.getElementById('email').value
+    
+            if(emailChecker.test(emailValue) == true){
+    
+                contact = {
+                    "firstName": firstNameValue,
+                    "lastName": lastNameValue,
+                    "address": addressValue,
+                    "city": cityValue,
+                    "email": emailValue
+                }
+            }    
+            return contact
+        }
+    }
+    
+    let sendForm = () =>{
+        if(checkCart() != false && checkForm() != false){
+            cartProducts.forEach(function(product){
+                products.push(product._id)
+            })
+    
+            let values = {
+                contact,
+                products
+            }
+            sendValues = JSON.stringify(values)
+            return sendValues
+        }else{
+            console.log("erreur au sendForm")
+        }
+    }
+    sendForm()
+    // requête POST
+    let sendPost = function(sendValues){
+        return new Promise(function(resolve){
+            let request = new XMLHttpRequest()
+            request.onreadystatechange = function(){
+                if(request.readyState === XMLHttpRequest.DONE && request.status == 201){
+                    sessionStorage.setItem('order', this.responseText)
+                    resolve(this.responseText)
+                    window.location = 'confirmation.html'
+                }
+            }
+            request.open("POST", "http://localhost:3000/api/teddies/order")
+            request.setRequestHeader("Content-Type", "application/json")
+            request.send(sendValues)
+        })
+    }
+    sendPost(sendValues)
     localStorage.clear()
 })
 
 // ouvrir la page de confirmation (nouvel onglet ou non)
-const mainConfirm = document.getElementById("mainConfirm")
+getOrder = () =>{
+    if(sessionStorage.getItem('order') != null){
 
-let getOrder = () =>{
-    if(sessionStorage.getItem("order") != null){
         let order = JSON.parse(sessionStorage.getItem('order'))
+        let priceToPay = 0
+        order.products.forEach((item)=>{
+            priceToPay += item.price
+        })
         mainConfirm.innerHTML = `<h2>Informations sur la commande</h2>
         <p>Nom et prénom : ${order.contact.firstName} ${order.contact.lastName}</p>
         <p>Adresse : ${order.contact.address} ${order.contact.city}</p>
         <p>Email : ${order.contact.email}</p>
-        <p>Total de la commande: ${totalPrice}</p>
+        <p>Total de la commande: ${parseInt(priceToPay / 100).toFixed(2) + ' €'}</p>
         <p>Numéro de commande : ${order.orderId}</p>`
-        console.log(order + " pas d'erreur au getOrder")
 
+    
         sessionStorage.removeItem('order')
     }else{
         alert("Merci de votre commande !")
         window.location.href = "index.html"
     }
 }
+
+
+
