@@ -23,10 +23,16 @@ body{
 section{
     display: flex;
     text-align: center;
+    justify-content: space-around;
 }
 
 #section_oursEnPeluche, #produit_texte{
     flex-flow: row wrap;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
 }
 
 li{
@@ -34,7 +40,6 @@ li{
 }
 
 .bouton_valide{
-    flex-basis: 50%;
     background-color: $purple;
     color: $bglogo;
     border-radius: 50px;

@@ -20,10 +20,16 @@ body {
 section {
   display: flex;
   text-align: center;
+  justify-content: space-around;
 }
 
 #section_oursEnPeluche, #produit_texte {
   flex-flow: row wrap;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
 }
 
 li {
@@ -31,7 +37,6 @@ li {
 }
 
 .bouton_valide {
-  flex-basis: 50%;
   background-color: #8b17b7;
   color: #f3e9f1;
   border-radius: 50px;
@@ -42,6 +47,7 @@ li {
 
 #produit_page {
   justify-content: space-between;
+  align-items: center;
 }
 #produit_page #produit_photo {
   width: auto;
@@ -64,9 +70,6 @@ li {
   display: none;
 }
 
-body h1 {
-  flex-basis: 100%;
-}
 body .index_title_article {
   flex-basis: 100%;
   text-align: start;
@@ -127,21 +130,28 @@ footer {
   justify-content: center;
   align-items: center;
 }
-#confirmation h1 {
+#confirmation header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 110px;
   padding-left: 5%;
 }
 #confirmation main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   border: double 5px #8b17b7;
   padding: 10px 20px;
   flex-basis: 100%;
   margin: 15px;
 }
-#confirmation main div {
-  border: solid 3px #f3e9f1;
-  padding: 5px 10px;
+#confirmation #imageReturn {
+  width: 100%;
+}
+#confirmation #imageReturn img {
+  width: 100%;
 }
 
 #finalPrice {
@@ -204,10 +214,9 @@ fieldset .bouton_valide {
   margin-top: 5px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 666px) {
   #produit_page {
     flex-direction: column;
-    align-items: center;
   }
   #produit_page #produit_photo {
     height: auto;
@@ -219,10 +228,40 @@ fieldset .bouton_valide {
     width: 320px;
     display: none;
   }
-}
-@media screen and (max-width: 780px) {
+
+  #mainCart {
+    margin: 10px;
+  }
+  #mainCart .cart_Article {
+    display: block;
+  }
+  #mainCart .cart_Article #cart_prix {
+    margin-right: 0;
+  }
+
+  #accueil {
+    display: none;
+  }
+
+  .index h1 {
+    padding: 0 5%;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  section {
+    display: block;
+  }
+
   body {
     margin: 0px 0px;
+  }
+
+  header {
+    padding-left: 5%;
   }
 
   fieldset {
