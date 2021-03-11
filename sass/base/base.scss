@@ -46,4 +46,13 @@ li{
     height: 50px;
     font-size: 1.1em;
     justify-self: center;
+
+    &:hover{
+        box-shadow: 1px 0px 5px 1px black;
+    }
+}
+
+.fas:hover{
+    transition-duration: 250ms;
+    color: red;
 }

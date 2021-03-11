@@ -177,6 +177,11 @@ if(cartProducts.length > 0 && mainCart != null){
 let contact = {}
 let products = []
 let sendValues
+
+let lettersChecker = /[a-zA-Z\s]+/
+let numbersChecker = /[0-9]/
+let specialCharactersChecker = /[§!@#$%^&*(),.?":{}|<>]/
+
 const emailChecker = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
 let formValidation = document.getElementById('validationButton')
 let form = document.getElementById('form')
@@ -206,7 +211,7 @@ if(formValidation != null){
                 let cityValue = document.getElementById('city').value
                 let emailValue = document.getElementById('email').value
         
-                if(emailChecker.test(emailValue) == true){
+                if(emailChecker.test(emailValue) == true && lettersChecker.test(firstNameValue) == true && numbersChecker.test(firstNameValue) == false && lettersChecker.test(lastNameValue) == true && numbersChecker.test(lastNameValue) == false && lettersChecker.test(cityValue) == true && numbersChecker.test(cityValue) == false){
         
                     contact = {
                         "firstName": firstNameValue,
@@ -245,6 +250,7 @@ if(formValidation != null){
                         sessionStorage.setItem('order', this.responseText)
                         resolve(this.responseText)
                         window.location = 'confirmation.html'
+                        localStorage.clear()
                     }
                 }
                 request.open("POST", "http://localhost:3000/api/teddies/order")
@@ -253,7 +259,6 @@ if(formValidation != null){
             })
         }
         sendPost(sendValues)
-        localStorage.clear()
     })
 }
 

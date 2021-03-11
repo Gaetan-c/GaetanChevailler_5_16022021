@@ -17,5 +17,9 @@
 
     nav a{
         padding: 15px;
+
+        &:hover{
+            font-size: 1.1em;
+        }
     }
 }
