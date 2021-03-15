@@ -178,11 +178,13 @@ let contact = {}
 let products = []
 let sendValues
 
+// regex de vérification
 let lettersChecker = /[a-zA-Z\s]+/
 let numbersChecker = /[0-9]/
 let specialCharactersChecker = /[§!@#$%^&*(),.?":{}|<>]/
-
 const emailChecker = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+
+// préparations des vérifications
 let formValidation = document.getElementById('validationButton')
 let form = document.getElementById('form')
 const mainConfirm = document.getElementById("mainConfirm")
@@ -202,7 +204,7 @@ if(formValidation != null){
         // vérifier les indications du formulaire et des valeurs demandées
         // récupération des valeurs inscrites
         let checkForm = () =>{
-            // vérifications de la valeur de l'email (les autres sont vérifiées par le HTML5)
+            
             if(cartProducts != null){
                 console.log("EmailChecker == true")
                 let firstNameValue = document.getElementById('firstName').value
@@ -224,7 +226,7 @@ if(formValidation != null){
                 return contact
             }
         }
-        
+        // préparation de l'objet à transmettre à l'API
         let sendForm = () =>{
             if(checkCart() != false && checkForm() != false){
                 cartProducts.forEach(function(product){
@@ -241,7 +243,7 @@ if(formValidation != null){
         }
         sendForm()
 
-        // requête POST
+        // requête POST : envoi à l'API
         let sendPost = function(sendValues){
             return new Promise(function(resolve){
                 let request = new XMLHttpRequest()
@@ -262,7 +264,7 @@ if(formValidation != null){
     })
 }
 
-// ouvrir la page de confirmation (nouvel onglet ou non)
+// ouverture de la page de confirmation avec les éléments suivants :
 getOrder = () =>{
     if(sessionStorage.getItem('order') != null){
 
