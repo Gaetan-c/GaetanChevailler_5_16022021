@@ -178,6 +178,8 @@ let contact = {}
 let products = []
 let sendValues
 
+
+
 // regex de vérification
 let lettersChecker = /[a-zA-Z\s]+/
 let numbersChecker = /[0-9]/
@@ -194,10 +196,12 @@ if(formValidation != null){
         e.preventDefault()
 
         let checkCart = () =>{
-            if(cartProducts != null){
-                return true
-            }else{
+            if(JSON.parse(localStorage.getItem('LSCartProducts')) === null || JSON.parse(localStorage.getItem('LSCartProducts')).length < 1){
+                alert('Votre panier est vide')
+                window.location.href = 'panier.html'
                 return false
+            }else{
+                return true
             }
         }
         
@@ -205,30 +209,28 @@ if(formValidation != null){
         // récupération des valeurs inscrites
         let checkForm = () =>{
             
-            if(cartProducts != null){
-                console.log("EmailChecker == true")
-                let firstNameValue = document.getElementById('firstName').value
-                let lastNameValue = document.getElementById('lastName').value
-                let addressValue = document.getElementById('address').value
-                let cityValue = document.getElementById('city').value
-                let emailValue = document.getElementById('email').value
+            let firstNameValue = document.getElementById('firstName').value
+            let lastNameValue = document.getElementById('lastName').value
+            let addressValue = document.getElementById('address').value
+            let cityValue = document.getElementById('city').value
+            let emailValue = document.getElementById('email').value
         
-                if(emailChecker.test(emailValue) == true && lettersChecker.test(firstNameValue) == true && numbersChecker.test(firstNameValue) == false && lettersChecker.test(lastNameValue) == true && numbersChecker.test(lastNameValue) == false && lettersChecker.test(cityValue) == true && numbersChecker.test(cityValue) == false){
+            if(emailChecker.test(emailValue) == true && lettersChecker.test(firstNameValue) == true && numbersChecker.test(firstNameValue) == false && lettersChecker.test(lastNameValue) == true && numbersChecker.test(lastNameValue) == false && lettersChecker.test(cityValue) == true && numbersChecker.test(cityValue) == false){
         
-                    contact = {
-                        "firstName": firstNameValue,
-                        "lastName": lastNameValue,
-                        "address": addressValue,
-                        "city": cityValue,
-                        "email": emailValue
-                    }
-                }    
-                return contact
-            }
+                contact = {
+                    "firstName": firstNameValue,
+                    "lastName": lastNameValue,
+                    "address": addressValue,
+                    "city": cityValue,
+                    "email": emailValue
+                }
+            }    
+            return contact
         }
+
         // préparation de l'objet à transmettre à l'API
         let sendForm = () =>{
-            if(checkCart() != false && checkForm() != false){
+            if(checkCart() === true && checkForm() != false){
                 cartProducts.forEach(function(product){
                     products.push(product._id)
                 })
