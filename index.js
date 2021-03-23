@@ -178,8 +178,6 @@ let contact = {}
 let products = []
 let sendValues
 
-
-
 // regex de vérification
 let lettersChecker = /[a-zA-Z\s]+/
 let numbersChecker = /[0-9]/
@@ -191,7 +189,31 @@ let formValidation = document.getElementById('validationButton')
 let form = document.getElementById('form')
 const mainConfirm = document.getElementById("mainConfirm")
 
+let firstName = document.getElementById('firstName')
+let lastName = document.getElementById('lastName')
+let address = document.getElementById('address')
+let city = document.getElementById('city')
+let email = document.getElementById('email')
+
 if(formValidation != null){
+
+    firstName.onchange = function() {
+        document.getElementById('lastName').disabled = false
+    }
+    lastName.onchange = function() {
+        document.getElementById('address').disabled = false
+    }
+    address.onchange = function() {
+        document.getElementById('city').disabled = false
+    }
+    city.onchange = function() {
+        document.getElementById('email').disabled = false
+    }
+    email.onchange = function() {
+        document.getElementById('validationButton').disabled = false
+    }
+
+
     formValidation.addEventListener('click', (e)=>{
         e.preventDefault()
 
@@ -209,11 +231,11 @@ if(formValidation != null){
         // récupération des valeurs inscrites
         let checkForm = () =>{
             
-            let firstNameValue = document.getElementById('firstName').value
-            let lastNameValue = document.getElementById('lastName').value
-            let addressValue = document.getElementById('address').value
-            let cityValue = document.getElementById('city').value
-            let emailValue = document.getElementById('email').value
+            let firstNameValue = firstName.value
+            let lastNameValue = lastName.value
+            let addressValue = address.value
+            let cityValue = city.value
+            let emailValue = email.value
         
             if(emailChecker.test(emailValue) == true && lettersChecker.test(firstNameValue) == true && numbersChecker.test(firstNameValue) == false && lettersChecker.test(lastNameValue) == true && numbersChecker.test(lastNameValue) == false && lettersChecker.test(cityValue) == true && numbersChecker.test(cityValue) == false){
         
@@ -230,7 +252,7 @@ if(formValidation != null){
 
         // préparation de l'objet à transmettre à l'API
         let sendForm = () =>{
-            if(checkCart() === true && checkForm() != false){
+            if(checkCart() === true && checkForm() != null){
                 cartProducts.forEach(function(product){
                     products.push(product._id)
                 })
@@ -247,20 +269,17 @@ if(formValidation != null){
 
         // requête POST : envoi à l'API
         let sendPost = function(sendValues){
-            return new Promise(function(resolve){
-                let request = new XMLHttpRequest()
-                request.onreadystatechange = function(){
-                    if(request.readyState === XMLHttpRequest.DONE && request.status == 201){
-                        sessionStorage.setItem('order', this.responseText)
-                        resolve(this.responseText)
-                        window.location = 'confirmation.html'
-                        localStorage.clear()
-                    }
+            let request = new XMLHttpRequest()
+            request.onreadystatechange = function(){
+                if(request.readyState === XMLHttpRequest.DONE && request.status == 201){
+                    sessionStorage.setItem('order', this.responseText)
+                    window.location = 'confirmation.html'
+                    localStorage.clear()
                 }
-                request.open("POST", "http://localhost:3000/api/teddies/order")
-                request.setRequestHeader("Content-Type", "application/json")
-                request.send(sendValues)
-            })
+            }
+            request.open("POST", "http://localhost:3000/api/teddies/order")
+            request.setRequestHeader("Content-Type", "application/json")
+            request.send(sendValues)
         }
         sendPost(sendValues)
     })
@@ -290,6 +309,3 @@ getOrder = () =>{
         window.location.href = "index.html"
     }
 }
-
-
-

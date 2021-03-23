@@ -223,6 +223,7 @@ fieldset .bouton_valide {
   width: 220px;
   margin-left: 37%;
   margin-top: 5px;
+  visibility: visible;
 }
 
 @media screen and (max-width: 666px) {
