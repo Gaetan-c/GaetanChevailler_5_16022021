@@ -196,24 +196,6 @@ let city = document.getElementById('city')
 let email = document.getElementById('email')
 
 if(formValidation != null){
-
-    firstName.onchange = function() {
-        document.getElementById('lastName').disabled = false
-    }
-    lastName.onchange = function() {
-        document.getElementById('address').disabled = false
-    }
-    address.onchange = function() {
-        document.getElementById('city').disabled = false
-    }
-    city.onchange = function() {
-        document.getElementById('email').disabled = false
-    }
-    email.onchange = function() {
-        document.getElementById('validationButton').disabled = false
-    }
-
-
     formValidation.addEventListener('click', (e)=>{
         e.preventDefault()
 
