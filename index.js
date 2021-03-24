@@ -5,12 +5,10 @@ let urlProduct = ''
 let totalPrice = 0
 
 //création du localStorage
-if(localStorage.getItem("LSCartProducts")){
-
-    }else{
-        let cartProducts = []
-        localStorage.setItem("LSCartProducts", JSON.stringify(cartProducts))
-    }
+if(!localStorage.getItem("LSCartProducts")){
+    let cartProducts = []
+    localStorage.setItem("LSCartProducts", JSON.stringify(cartProducts))
+}
 
 //création du panier
 let cartProducts = JSON.parse(localStorage.getItem("LSCartProducts"))
@@ -23,8 +21,6 @@ let getProducts = function(){
         request.onreadystatechange = function(){
             if(request.readyState === XMLHttpRequest.DONE && request.status == 200){
                 resolve(JSON.parse(request.responseText))
-            } else {
-                console.log("request says error")
             }
         }
         request.open("GET", "http://localhost:3000/api/teddies" + '/' + urlProduct)
@@ -189,15 +185,15 @@ let formValidation = document.getElementById('validationButton')
 let form = document.getElementById('form')
 const mainConfirm = document.getElementById("mainConfirm")
 
-let firstName = document.getElementById('firstName')
-let lastName = document.getElementById('lastName')
-let address = document.getElementById('address')
-let city = document.getElementById('city')
-let email = document.getElementById('email')
-
 if(formValidation != null){
     formValidation.addEventListener('click', (e)=>{
         e.preventDefault()
+
+        let firstNameValue = document.getElementById('firstName').value
+        let lastNameValue = document.getElementById('lastName').value
+        let addressValue = document.getElementById('address').value
+        let cityValue = document.getElementById('city').value
+        let emailValue = document.getElementById('email').value
 
         let checkCart = () =>{
             if(JSON.parse(localStorage.getItem('LSCartProducts')) === null || JSON.parse(localStorage.getItem('LSCartProducts')).length < 1){
@@ -212,42 +208,12 @@ if(formValidation != null){
         // vérifier les indications du formulaire et des valeurs demandées
         // récupération des valeurs inscrites
         let checkForm = () =>{
-            
-            let firstNameValue = firstName.value
-            let lastNameValue = lastName.value
-            let addressValue = address.value
-            let cityValue = city.value
-            let emailValue = email.value
-        
             if(emailChecker.test(emailValue) == true && lettersChecker.test(firstNameValue) == true && numbersChecker.test(firstNameValue) == false && lettersChecker.test(lastNameValue) == true && numbersChecker.test(lastNameValue) == false && lettersChecker.test(cityValue) == true && numbersChecker.test(cityValue) == false){
-        
-                contact = {
-                    "firstName": firstNameValue,
-                    "lastName": lastNameValue,
-                    "address": addressValue,
-                    "city": cityValue,
-                    "email": emailValue
-                }
-            }    
-            return contact
-        }
-
-        // préparation de l'objet à transmettre à l'API
-        let sendForm = () =>{
-            if(checkCart() === true && checkForm() != null){
-                cartProducts.forEach(function(product){
-                    products.push(product._id)
-                })
-        
-                let values = {
-                    contact,
-                    products
-                }
-                sendValues = JSON.stringify(values)
-                return sendValues
+               return true
+            }else{
+                return false
             }
         }
-        sendForm()
 
         // requête POST : envoi à l'API
         let sendPost = function(sendValues){
@@ -263,7 +229,33 @@ if(formValidation != null){
             request.setRequestHeader("Content-Type", "application/json")
             request.send(sendValues)
         }
-        sendPost(sendValues)
+
+        // préparation de l'objet à transmettre à l'API
+        let sendForm = () =>{
+            if(checkCart() === true && checkForm() === true){
+                cartProducts.forEach(function(product){
+                    products.push(product._id)
+
+                    contact = {
+                        "firstName": firstNameValue,
+                        "lastName": lastNameValue,
+                        "address": addressValue,
+                        "city": cityValue,
+                        "email": emailValue
+                    }
+                    return contact
+                })
+        
+                let values = {
+                    contact,
+                    products
+                }
+                sendValues = JSON.stringify(values)
+                sendPost(sendValues)
+            }
+            
+        }
+        sendForm()   
     })
 }
 
